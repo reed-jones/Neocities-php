@@ -9,7 +9,7 @@ composer require reed-jones/neocities
 ## Usage
 ```php
 // First we include the library
-use ReedJnes/Neocities/Neocities;
+use ReedJones/Neocities/Neocities;
 
 // Then we log in using either username/password or api key
 
