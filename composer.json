@@ -1,0 +1,22 @@
+{
+    "name": "reed-jones/neocities",
+    "description": "A thin client wrapper around the neocities api",
+    "keywords": ["api", "neocities"],
+    "license": "ISC",
+    "authors": [
+        {
+            "name": "Reed Jones",
+            "email": "reedjones@reedjones.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "type": "project",
+    "require": {
+        "php": ">=7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "ReedJones\\Neocities\\": "src/"
+        }
+    }
+}
