@@ -120,7 +120,7 @@ class Neocities
         foreach ($files as $name => &$place) {
             $place = curl_file_create($place);
         }
-        // var_dump($files); die;
+
         return $this->Post('upload', $files);
     }
 
@@ -157,11 +157,11 @@ class Neocities
         $ch = curl_init();
 
         if (isset($this->apiKey)) {
-            $neo_api = "{$options['protocall']}://{$url}/{$endpoint}";
+            $neo_api = "{$options['protocol']}://{$url}/{$endpoint}";
             $authorization = "Authorization: Bearer {$this->apiKey}";
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', $authorization]);
         } else {
-            $neo_api = "{$options['protocall']}://{$this->ApiAuth()}@{$url}/{$endpoint}";
+            $neo_api = "{$options['protocol']}://{$this->ApiAuth()}@{$url}/{$endpoint}";
         }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -190,11 +190,11 @@ class Neocities
         $ch = curl_init();
         if (isset($this->apiKey)) {
             // echo 'API'; die;
-            $neo_api = "{$options['protocall']}://{$url}/{$endpoint}";
+            $neo_api = "{$options['protocol']}://{$url}/{$endpoint}";
             $authorization = "Authorization: Bearer {$this->apiKey}";
             curl_setopt($ch, CURLOPT_HTTPHEADER, [$authorization]);
         } else {
-            $neo_api = "{$options['protocall']}://{$this->ApiAuth()}@{$url}/{$endpoint}";
+            $neo_api = "{$options['protocol']}://{$this->ApiAuth()}@{$url}/{$endpoint}";
         }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_URL, $neo_api);
@@ -232,12 +232,12 @@ class Neocities
      */
     private function parseUrl(string $url)
     {
-        $re = '/^(?<protocall>https?):\/\/((?<subdomain>.+)\.)?(?<domain>.+)\.(?<tld>[a-zA-Z]{2,})$/m';
+        $re = '/^(?<protocol>https?):\/\/((?<subdomain>.+)\.)?(?<domain>.+)\.(?<tld>[a-zA-Z]{2,})$/m';
 
         preg_match($re, $url, $matches);
 
         return [
-            'protocall' => isset($matches['protocall']) ? $matches['protocall'] : 'http://',
+            'protocol' => isset($matches['protocol']) ? $matches['protocol'] : 'http://',
             'subdomain' => $matches['subdomain'],
             'domain' => $matches['domain'],
             'tld' => $matches['tld'],

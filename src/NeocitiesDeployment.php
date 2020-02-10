@@ -24,11 +24,11 @@ class NeocitiesDeployment
 
             $buildDir = str_replace(__DIR__, '', $this->getDestinationPath());
 
-            $files = collect($this->getFilesystem()->allFiles(__DIR__.$buildDir))
-                ->flatMap(function ($file) use ($buildDir) {
-                    $file = $file->getRelativePathname();
+            $files = collect($this->getFilesystem()->allFiles($buildDir))
+                ->flatMap(function ($file) {
+                    $relative = $file->getRelativePathname();
 
-                    return [$file => ".{$buildDir}/$file"];
+                    return [$relative => $file->getPathname()];
                 })
                 ->toArray();
 
