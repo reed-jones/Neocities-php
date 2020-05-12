@@ -27,8 +27,21 @@ class RegisterDeploymentCommand extends BuildCommand
     protected function fire()
     {
         parent::fire();
+
+        $startTime = microtime(true);
+
         $env = $this->input->getArgument('env');
         $info = $this->jigsaw->deployToNeocities();
-        $this->console->info("Site deployed from {$env} to https://{$info->info->sitename}.neocities.org");
+
+        $this->writeDeployTime($startTime);
+        $this->console->info("{$env} deployed to https://{$info->info->sitename}.neocities.org");
+    }
+
+    protected function writeDeployTime($time) {
+        $this->console->write(
+            '<fg=yellow>Deploy time: </><fg=white>' .
+            round(microtime(true) - $time, 2) .
+            ' seconds</> '
+        );
     }
 }
