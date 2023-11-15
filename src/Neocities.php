@@ -179,6 +179,7 @@ class Neocities
      * @param mixed $data
      *
      * @return mixed $result
+     * @throws \Exception
      */
     private function Post($method, $data)
     {
@@ -201,7 +202,13 @@ class Neocities
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $result = curl_exec($ch);
+        $errorNo = curl_errno($ch);
         curl_close($ch);
+
+        // Handle Curl error codes
+        // https://curl.se/libcurl/c/libcurl-errors.html
+        if($errorNo === 3) throw new \Exception(sprintf('Malformed URL: %s', $neo_api)); // Catch errors caused by un-encoded values in request URLs
+        if($errorNo !== 0) throw new \Exception(sprintf('Error performing API call %s', $neo_api)); // Catch all other errors
 
         return json_decode($result);
     }
@@ -217,7 +224,7 @@ class Neocities
         if (isset($this->apiKey)) {
             return $this->apiKey;
         } elseif (isset($this->username) && isset($this->password)) {
-            return implode(':', [$this->username, $this->password]);
+            return implode(':', [urlencode($this->username), urlencode($this->password)]);
         } else {
             throw new \Exception('No credentials provided. API key, or username/password required. Refer to the docs for more information');
         }
